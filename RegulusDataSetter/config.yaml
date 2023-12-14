@@ -1,8 +1,8 @@
-name: RegulusDataReader
+name: RegulusDataSetter
 version: "0.0.2"
-slug: regulus_data_reader
+slug: regulus_data_setter
 description: Run a Python script as a Home Assistant add-on
-url: https://github.com/hajekmartin/regulusdatareader
+url: https://github.com/hajekmartin/regulusdatasetter
 arch:
     - armhf
     - armv7
