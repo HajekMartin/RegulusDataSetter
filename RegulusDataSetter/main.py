@@ -3,7 +3,7 @@ import requests
 def set_value():
     # Your POST request code here
     url = "http://192.168.0.116/HOME.XML"
-    data = "__T4B9BD0CF_BOOL_i%3D1"
+    data = "__T70BDAE66_REAL_.1f%3D20.0"
     response = requests.post(url, data=data)
     print(response.text)
     if response.status_code == 200:
