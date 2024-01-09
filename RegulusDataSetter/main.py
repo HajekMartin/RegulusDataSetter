@@ -13,5 +13,5 @@ def set_value(data):
 
 if __name__ == '__main__':
     set_value("__T70BDAE66_REAL_.1f=20.0")
-    set_value("__T326B0D57_BOOL_i=1")
+    set_value("__T14B807DC_BOOL_i=1")
     
