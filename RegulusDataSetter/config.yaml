@@ -10,11 +10,11 @@ arch:
     - aarch64
 init: false
 options:
-  guid: string
-  url: string
+  guid: ''
+  url: ''
 schema:
-  guid: string
-  url: string
+  guid: str
+  url: str
 logger:
   default: info
 system_log:
