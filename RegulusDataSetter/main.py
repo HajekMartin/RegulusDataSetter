@@ -91,6 +91,7 @@ def print_log(message, method):
     print("[", datetime.datetime.now(), method, "]", message)
 
 if __name__ == '__main__':
+    print_log("Starting RegulusDataSetter", "main")
     scheduler = BlockingScheduler()
     scheduler.add_job(read_actual_time_actions, 'cron', minute='0,15,30,45')
     scheduler.add_job(download_schedule, 'cron', hour=19, minute=0)
