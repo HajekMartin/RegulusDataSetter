@@ -4,6 +4,7 @@ import datetime
 from apscheduler.schedulers.blocking import BlockingScheduler
 import yaml
 import time
+import os
 
 def read_json(filepath):
     try:
@@ -55,9 +56,14 @@ def download_schedule():
     guid = read_config('guid')
     #guid = "8B12DFE1-6E3B-46E8-AF38-E1C0E73C2558"
     url = read_config('url')
-    #url = "https://dphajek-windows.azurewebsites.net/Api/ApiRegulus/GetTomorrowSchedulde"
+    #url = "https://dphajek-windows.azurewebsites.net/Api/Regulus/GetSchedule"
     next_date = (datetime.date.today() + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
-    next_date = (datetime.date.today()).strftime("%Y-%m-%d")
+    #next_date = (datetime.date.today()).strftime("%Y-%m-%d")
+
+    file_name = next_date + ".txt"
+    if os.path.exists(file_name):
+        print_log(f"File {file_name} already exists", "download_schedule")
+        return
 
     while True:
         print_log("Downloading schedule", "download_schedule")
@@ -72,7 +78,7 @@ def download_schedule():
             file_name = next_date + ".txt"
             with open(file_name, 'w') as file:
                 file.write(str(json_data))
-            print_log(f"JSON data downloaded and saved to {file_name}" "download_schedule")
+            print_log(f"JSON data downloaded and saved to {file_name}", "download_schedule")
             return
         except (requests.RequestException, IOError) as e:
             print_log(f"Failed to download schedule {e}" "download_schedule")
@@ -92,8 +98,10 @@ def print_log(message, method):
 
 if __name__ == '__main__':
     print_log("Starting RegulusDataSetter", "main")
+    download_schedule()
     scheduler = BlockingScheduler()
     scheduler.add_job(read_actual_time_actions, 'cron', minute='0,15,30,45')
     scheduler.add_job(download_schedule, 'cron', hour=19, minute=0)
     scheduler.start()
+    
     
