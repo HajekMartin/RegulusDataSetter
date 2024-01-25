@@ -9,6 +9,12 @@ arch:
     - amd64
     - aarch64
 init: false
+options:
+  guid: string
+  url: string
+schema:
+  guid: string
+  url: string
 logger:
   default: info
 system_log:
