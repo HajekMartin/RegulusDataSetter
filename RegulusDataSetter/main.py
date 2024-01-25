@@ -91,6 +91,7 @@ def read_config(value_name):
         config = yaml.safe_load(config_file)
 
     value = config['options'].get(value_name)
+    print_log("Config " + value_name + " = " + value, "read_config")
     return value
 
 def print_log(message, method):
