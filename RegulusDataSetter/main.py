@@ -81,7 +81,7 @@ def download_schedule():
             print_log(f"JSON data downloaded and saved to {file_name}", "download_schedule")
             return
         except (requests.RequestException, IOError) as e:
-            print_log(f"Failed to download schedule {e}" "download_schedule")
+            print_log(f"Failed to download schedule {e}", "download_schedule")
             time.sleep(300)  # Wait for 5 minutes before next attempt
 
 def read_config(value_name):
