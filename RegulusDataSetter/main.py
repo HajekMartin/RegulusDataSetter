@@ -85,24 +85,35 @@ def download_schedule():
             time.sleep(300)  # Wait for 5 minutes before next attempt
 
 def read_config(value_name):
-    print_log("Reding config " + value_name, "read_config")
-    file_path = '/usr/src/app/config.yaml'
-    with open(file_path, 'r') as config_file:
-        config = yaml.safe_load(config_file)
+    try:
+        print_log("Reading config " + value_name, "read_config")
+        file_path = '/usr/src/app/config.yaml'
+        
+        with open(file_path, 'r') as config_file:
+            config = yaml.safe_load(config_file)
 
-    value = config['options'].get(value_name)
-    print_log("Config " + value_name + " = " + value, "read_config")
-    return value
+        value = config['options'].get(value_name)
+        print_log("Config " + value_name + " = " + value, "read_config")
+        return value
+    except Exception as e:
+        print_log("Failed to read config: " + str(e), "read_config")
+        return None
 
 def print_log(message, method):
     print("[", datetime.datetime.now(), method, "]", message)
 
 if __name__ == '__main__':
     print_log("Starting RegulusDataSetter", "main")
-    download_schedule()
+    
     scheduler = BlockingScheduler()
     scheduler.add_job(read_actual_time_actions, 'cron', minute='0,15,30,45')
     scheduler.add_job(download_schedule, 'cron', hour=19, minute=0)
+    current_time = datetime.datetime.now().time()
+    if current_time > datetime.time(18, 59):
+        scheduler.add_job(download_schedule, 'date', run_date=datetime.datetime.now() + datetime.timedelta(seconds=5))
     scheduler.start()
+    scheduler.start()
+
+    
     
     
