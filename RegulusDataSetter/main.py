@@ -56,9 +56,9 @@ def set_value(actions):
 def download_schedule():
     print_log("Download schedule starting", "download_schedule")
     guid = read_config('guid')
-    guid = "8B12DFE1-6E3B-46E8-AF38-E1C0E73C2558"
+    #guid = "8B12DFE1-6E3B-46E8-AF38-E1C0E73C2558"
     url = read_config('url')
-    url = "https://dphajek-windows.azurewebsites.net/Api/Regulus/GetSchedule"
+    #url = "https://dphajek-windows.azurewebsites.net/Api/Regulus/GetSchedule"
     next_date = (datetime.date.today() + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
     actual_date = datetime.date.today().strftime("%Y-%m-%d")
     date = next_date
