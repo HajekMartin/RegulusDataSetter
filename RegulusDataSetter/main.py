@@ -106,14 +106,16 @@ def schedule_file_exists(file_name):
 def read_config(value_name):
     try:
         print_log("Reading config " + value_name, "read_config")
-        file_path = DEF_FODLER + 'config.yaml'
+        file_path = 'data/' + 'options.json'
         
-        with open(file_path, 'r') as config_file:
-            config = yaml.safe_load(config_file)
-
-        value = config['options'].get(value_name)
-        print_log("Config " + value_name + " = " + value, "read_config")
-        return value
+        with open(file_path) as file:
+            data = json.load(file)
+            if value_name in data:
+                value = data[value_name]
+                print_log("Config " + value_name + " = " + value, "read_config")
+                return value
+            else:
+                raise Exception("Value not found")
     except Exception as e:
         print_log("Failed to read config: " + str(e), "read_config")
         return None
