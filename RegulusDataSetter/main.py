@@ -138,6 +138,11 @@ def create_log_file():
 
 if __name__ == '__main__':
     print_log("Starting RegulusDataSetter", "main")
+
+    guid = os.getenv('GUID')
+    url = os.getenv('URL')
+    print(f"GUID: {guid}")
+    print(f"URL: {url}")
     
     scheduler = BlockingScheduler()
     scheduler.add_job(read_actual_time_actions, 'cron', minute='0,15,30,45')
