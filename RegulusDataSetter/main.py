@@ -56,47 +56,43 @@ def set_value(actions):
 def download_schedule():
     print_log("Download schedule starting", "download_schedule")
     guid = read_config('guid')
-    #guid = "8B12DFE1-6E3B-46E8-AF38-E1C0E73C2558"
+    guid = "8B12DFE1-6E3B-46E8-AF38-E1C0E73C2558"
     url = read_config('url')
-    #url = "https://dphajek-windows.azurewebsites.net/Api/Regulus/GetSchedule"
+    url = "https://dphajek-windows.azurewebsites.net/Api/Regulus/GetSchedule"
     next_date = (datetime.date.today() + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
     actual_date = datetime.date.today().strftime("%Y-%m-%d")
-    date = next_date
+
+    dates = []
 
     current_time = datetime.datetime.now().time()
-    if current_time > datetime.time(19, 00) and schedule_file_exists(next_date + ".txt"):
-        print_log("Schedule for " + next_date, "download_schedule")
-        return
+    if current_time > datetime.time(19, 00) and not schedule_file_exists(next_date + ".txt"):
+        dates.append(next_date)
     
-    if current_time < datetime.time(18, 59) and schedule_file_exists(actual_date + ".txt"):
-        print_log("Schedule for " + actual_date, "download_schedule")
-        return
-    else:
-        date = actual_date
+    if not schedule_file_exists(actual_date + ".txt"):
+        dates.append(actual_date)
 
-    file_name = date + ".txt"
-    if os.path.exists(file_name):
-        print_log(f"File {file_name} already exists", "download_schedule")
-        return
-
-    while True:
-        print_log("Downloading schedule " + date, "download_schedule")
-        try:
-            params = {
-                'date': date,
-                'guid': guid
-            }
-            response = requests.get(url, params=params)
-            response.raise_for_status()
-            json_data = response.json()
-            file_name = date + ".txt"
-            with open(DEF_FODLER + file_name, 'w') as file:
-                file.write(json.dumps(json_data))
-            print_log(f"JSON data downloaded and saved to {file_name}", "download_schedule")
-            return
-        except (requests.RequestException, IOError) as e:
-            print_log(f"Failed to download schedule {e}", "download_schedule")
-            time.sleep(300)  # Wait for 5 minutes before next attempt
+    
+    for i in range (len(dates)):
+        cont = True
+        while cont:
+            date = dates[i]
+            print_log("Downloading schedule " + date, "download_schedule")
+            try:
+                params = {
+                    'date': date,
+                    'guid': guid
+                }
+                response = requests.get(url, params=params)
+                response.raise_for_status()
+                json_data = response.json()
+                file_name = date + ".txt"
+                with open(DEF_FODLER + file_name, 'w') as file:
+                    file.write(json.dumps(json_data))
+                print_log(f"JSON data downloaded and saved to {file_name}", "download_schedule")
+                cont = False
+            except (requests.RequestException, IOError) as e:
+                print_log(f"Failed to download schedule {e}", "download_schedule")
+                time.sleep(300)  # Wait for 5 minutes before next attempt
 
 def schedule_file_exists(file_name):
     if os.path.exists(DEF_FODLER + file_name):
