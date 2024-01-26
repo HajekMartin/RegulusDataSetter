@@ -6,9 +6,11 @@ import yaml
 import time
 import os
 
+DEF_FODLER = 'usr/src/app/'
+
 def read_json(filepath):
     try:
-        with open(filepath, 'r') as file:
+        with open(DEF_FODLER + filepath, 'r') as file:
             data = json.load(file)
             return data
     except (FileNotFoundError, json.JSONDecodeError, Exception) as e:
@@ -18,7 +20,7 @@ def read_json(filepath):
 def read_actual_time_actions():
     print_log("Reading actual time actions", "set_value")
     current_date = datetime.date.today().strftime("%Y-%m-%d")
-    schedule = read_json("./RegulusDataSetter/" + current_date + ".txt")
+    schedule = read_json(current_date + ".txt")
     if schedule is None:
         return
     # Key
@@ -88,7 +90,7 @@ def download_schedule():
             response.raise_for_status()
             json_data = response.json()
             file_name = date + ".txt"
-            with open(file_name, 'w') as file:
+            with open(DEF_FODLER + file_name, 'w') as file:
                 file.write(str(json_data))
             print_log(f"JSON data downloaded and saved to {file_name}", "download_schedule")
             return
@@ -97,14 +99,14 @@ def download_schedule():
             time.sleep(300)  # Wait for 5 minutes before next attempt
 
 def schedule_file_exists(file_name):
-    if os.path.exists(file_name):
+    if os.path.exists(DEF_FODLER + file_name):
         return True
     return False
 
 def read_config(value_name):
     try:
         print_log("Reading config " + value_name, "read_config")
-        file_path = '/usr/src/app/config.yaml'
+        file_path = DEF_FODLER + 'config.yaml'
         
         with open(file_path, 'r') as config_file:
             config = yaml.safe_load(config_file)
@@ -117,7 +119,22 @@ def read_config(value_name):
         return None
 
 def print_log(message, method):
-    print("[", datetime.datetime.now(), method, "]", message)
+    string = "[ " + datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " ] " + method + " " + message
+    create_log_file()
+    
+    log_file = DEF_FODLER + 'logs/' + datetime.datetime.now().strftime("%Y-%m-%d") + '.log'
+    with open(log_file, 'a') as file:
+        file.write(string + '\n')
+    
+def create_log_file():
+    log_folder = DEF_FODLER + 'logs/'
+    if not os.path.exists(log_folder):
+        os.makedirs(log_folder)
+    
+    log_file = log_folder + datetime.datetime.now().strftime("%Y-%m-%d") + '.log'
+    if not os.path.exists(log_file):
+        with open(log_file, 'w') as file:
+            pass
 
 if __name__ == '__main__':
     print_log("Starting RegulusDataSetter", "main")
