@@ -56,9 +56,9 @@ def set_value(actions):
 def download_schedule():
     print_log("Download schedule starting", "download_schedule")
     guid = read_config('guid')
-    #guid = "8B12DFE1-6E3B-46E8-AF38-E1C0E73C2558"
+    guid = "8B12DFE1-6E3B-46E8-AF38-E1C0E73C2558"
     url = read_config('url')
-    #url = "https://dphajek-windows.azurewebsites.net/Api/Regulus/GetSchedule"
+    url = "https://dphajek-windows.azurewebsites.net/Api/Regulus/GetSchedule"
     next_date = (datetime.date.today() + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
     actual_date = datetime.date.today().strftime("%Y-%m-%d")
     date = next_date
@@ -91,7 +91,7 @@ def download_schedule():
             json_data = response.json()
             file_name = date + ".txt"
             with open(DEF_FODLER + file_name, 'w') as file:
-                file.write(str(json_data))
+                file.write(json.dumps(json_data))
             print_log(f"JSON data downloaded and saved to {file_name}", "download_schedule")
             return
         except (requests.RequestException, IOError) as e:
