@@ -141,8 +141,12 @@ if __name__ == '__main__':
 
     guid = os.getenv('GUID')
     url = os.getenv('URL')
-    print(f"GUID: {guid}")
-    print(f"URL: {url}")
+    print_log(f"GUID: {guid}", "main")
+    print_log(f"URL: {url}", "main")
+    guid = os.getenv('guid')
+    url = os.getenv('url')
+    print_log(f"GUID: {guid}", "main")
+    print_log(f"URL: {url}", "main")
     
     scheduler = BlockingScheduler()
     scheduler.add_job(read_actual_time_actions, 'cron', minute='0,15,30,45')
