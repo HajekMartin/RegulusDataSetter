@@ -28,14 +28,12 @@ def set_value(actions):
         url = action["URL"]
         data = action["body"]
         try:
-            print_log("--- Setted value " + url + " " + data, "set_value")
-            """
+            # print_log("--- Setted value " + url + " " + data, "set_value")
             response = requests.post(url, data=data)
             if response.status_code == 200:
                 print_log("Setted value " + url + " " + data, "set_value")
             else:
                 print_log("POST request failed " + url + " " + data, "set_value")
-            """
         except:
             print_log("POST request failed with exeption " + url + " " + data, "set_value")
             continue
