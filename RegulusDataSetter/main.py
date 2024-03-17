@@ -41,8 +41,7 @@ def set_value(actions):
 def download_schedule(date):
     guid = read_config('guid')
     #guid = '8b12dfe1-6e3b-46e8-af38-e1c0e73c2558'
-    url = read_config('url')
-    #url = 'https://dphajek-windows.azurewebsites.net/Api/Regulus/GetActualActions'
+    url = 'https://dphajek-windows.azurewebsites.net/Api/Regulus/GetActualActions'
     print_log("Downloading schedule ", "download_schedule")
     try:
         params = {

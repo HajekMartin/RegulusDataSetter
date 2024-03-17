@@ -11,10 +11,8 @@ arch:
 init: false
 options:
   guid: ''
-  url: ''
 schema:
   guid: str
-  url: str
 logger:
   default: info
 system_log:
